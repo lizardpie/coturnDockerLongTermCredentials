@@ -9,6 +9,8 @@ ENV TURN_PORT_END 20000
 ENV TURN_SECRET mysecret
 ENV TURN_SERVER_NAME coturn
 ENV TURN_REALM north.gov
+ENV TURN_EXTERNAL_IP 0.0.0.0
+ENV TURN_LISTEN_IP 0.0.0.0
 
 ADD start_coturn.sh start_coturn.sh
 RUN chmod +x start_coturn.sh
