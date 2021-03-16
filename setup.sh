@@ -2,23 +2,31 @@
 
 
 function generate_env_file {
-    ENV_FILE="./coturn.env"
     MIN_PORT="49152"
     MAX_PORT="65535"
     TURN_PORT="3478"
+    TURN_TLS_PORT="5349"
 
-    echo "Setup coturn.env..."
+    echo "Setup environment files..."
 
-    echo "TURN_FLAGS=-a" > $ENV_FILE
-    echo "TURN_LISTEN_IP=0.0.0.0" >> $ENV_FILE
-    echo "TURN_EXTERNAL_IP=${EXTERNAL_IP}" >> $ENV_FILE
-    echo "TURN_SERVER_NAME=${TURN_SERVER_NAME}">> $ENV_FILE
-    echo "TURN_REALM=${TURN_REALM}" >> $ENV_FILE
-    echo "TURN_SECRET=${TURN_AUTH_SECRET}" >> $ENV_FILE
-    echo "TURN_PORT=${TURN_PORT}" >> $ENV_FILE
-    echo "TURN_PORT_START=${MIN_PORT}" >> $ENV_FILE
-    echo "TURN_PORT_END=${MAX_PORT}" >> $ENV_FILE
-    echo "TURN_EXTRA=" >> $ENV_FILE
+    # .env
+    echo "SERVER_CRT=${SERVER_CRT}" > .env
+    echo "SERVER_KEY=${SERVER_KEY}" >> .env
+
+    # coturn.env
+    echo "TURN_FLAGS=-a" > coturn.env
+    echo "TURN_LISTEN_IP=0.0.0.0" >> coturn.env
+    echo "TURN_EXTERNAL_IP=${EXTERNAL_IP}" >> coturn.env
+    echo "TURN_SERVER_NAME=${TURN_SERVER_NAME}">> coturn.env
+    echo "TURN_REALM=${TURN_REALM}" >> coturn.env
+    echo "TURN_SECRET=${TURN_AUTH_SECRET}" >> coturn.env
+    echo "TURN_PORT=${TURN_PORT}" >> coturn.env
+    echo "TURN_TLS_PORT=${TURN_TLS_PORT}" >> coturn.env
+    echo "TURN_CERT=/etc/ssl/server.crt" >> coturn.env
+    echo "TURN_PKEY=/etc/ssl/server.key" >> coturn.env
+    echo "TURN_PORT_START=${MIN_PORT}" >> coturn.env
+    echo "TURN_PORT_END=${MAX_PORT}" >> coturn.env
+    echo "TURN_EXTRA=" >> coturn.env
 }
 
 
@@ -49,6 +57,10 @@ if [[ $(which docker) ]] && [[ $(which docker-compose) ]]
     TURN_SERVER_NAME="${TURN_SERVER_NAME:-${TURN_REALM}}"
 
     read -e -p "Please enter the authentication secret: " TURN_AUTH_SECRET
+
+    read -e -p "Please enter the full path to the TLS Certificate: " SERVER_CRT
+
+    read -e -p "Please enter the full path to the TLS Private Key: " SERVER_KEY
 
     generate_env_file
     ./start.sh

@@ -3,9 +3,12 @@ version: '3.4'
 services:
   coturn:
     image: coturn-long-term-cred
-    container_name: my_coturn
+    container_name: vidyo_coturn
     restart: always
     env_file:
       - ./coturn.env
+    volumes:
+      - ${SERVER_KEY}:/etc/ssl/server.key
+      - ${SERVER_CRT}:/etc/ssl/server.crt
     network_mode: "host"
         
