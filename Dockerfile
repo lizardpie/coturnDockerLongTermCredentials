@@ -1,4 +1,4 @@
-FROM ubuntu:16.04
+FROM ubuntu:18.04
 MAINTAINER Buddhika Jayawardhana <jay@meetrix.io>
 
 RUN apt-get update && apt-get install -y coturn && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
@@ -12,7 +12,7 @@ ENV TURN_REALM north.gov
 ENV TURN_EXTERNAL_IP 0.0.0.0
 ENV TURN_LISTEN_IP 0.0.0.0
 
-ADD start_coturn.sh start_coturn.sh
+ADD ./adds/start_coturn.sh start_coturn.sh
 RUN chmod +x start_coturn.sh
 
 CMD ["./start_coturn.sh"]

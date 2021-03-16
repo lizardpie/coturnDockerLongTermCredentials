@@ -1,0 +1,11 @@
+version: '3.4'
+
+services:
+  coturn:
+    image: coturn-long-term-cred
+    container_name: my_coturn
+    restart: always
+    env_file:
+      - ./coturn.env
+    network_mode: "host"
+        
